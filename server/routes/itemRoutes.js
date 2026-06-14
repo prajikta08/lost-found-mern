@@ -306,7 +306,7 @@ async (req,res)=>{
 
     //prevent users from claiming their own items
     const item = await Item.findById(req.params.id);
-    if(items.owner.toString() == req.user.id){
+    if(item.owner.toString() == req.user.id){
         return res.status(400).json({
             message: "You cannot claim your own item"
         })
