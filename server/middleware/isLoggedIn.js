@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = function(req, res, next) {
+
+    console.log("Cookies:", req.cookies);
+
     const token = req.cookies.token;
 
     if (!token) {
@@ -19,10 +22,10 @@ module.exports = function(req, res, next) {
         next();
 
     } catch (err) {
+        console.log("JWT Error:", err);
 
         return res.status(401).json({
             message: "Invalid token"
         });
-
     }
 };
