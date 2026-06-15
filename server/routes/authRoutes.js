@@ -10,20 +10,13 @@ router.post("/register", async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        const existingUser = await User.findOne({
-            email
-        });
-        
+        const existingUser = await User.findOne({ email });
+
         if (existingUser) {
-            return res.status(400).send(
-                "User already exists"
-            );
+            return res.status(400).send("User already exists");
         }
 
-        const hash = await bcrypt.hash(
-            password,
-            10
-        );
+        const hash = await bcrypt.hash(password, 10);
 
         const user = await User.create({
             username,
@@ -42,14 +35,8 @@ router.post("/register", async (req, res) => {
             }
         );
 
-        res.cookie("token", token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none"
-});
-
         res.status(201).json({
-            message: "Registration successful",
+            token,
             user: {
                 id: user._id,
                 username: user.username,
@@ -59,9 +46,7 @@ router.post("/register", async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(500).send(
-            "Something went wrong"
-        );
+        res.status(500).send("Something went wrong");
     }
 });
 
@@ -69,14 +54,10 @@ router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await User.findOne({
-            email
-        });
+        const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(404).send(
-                "User not found"
-            );
+            return res.status(404).send("User not found");
         }
 
         const result = await bcrypt.compare(
@@ -101,22 +82,17 @@ router.post("/login", async (req, res) => {
             }
         );
 
-        res.cookie("token", token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none"
-});
         res.status(200).json({
-            message: "Login successful",
+            token,
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email
             }
         });
+
     } catch (err) {
         console.log(err);
-
         res.status(500).send(
             "Something went wrong"
         );
@@ -124,27 +100,13 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-    res.clearCookie("token", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none"
-    });
-
     res.status(200).json({
         message: "Logged out successfully"
     });
 });
 
-router.get("/", (req,res)=>{
+router.get("/", (req, res) => {
     res.send("api running");
-});
-
-router.get("/register", (req,res)=>{
-    //res.render("register");
-});
-
-router.get("/login", (req,res)=>{
-   // res.render("login");
 });
 
 module.exports = router;

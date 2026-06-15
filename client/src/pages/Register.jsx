@@ -21,15 +21,21 @@ function Register() {
 
     try {
 
-      await api.post("/register", {
-        username,
-        email,
-        password
-      });
+      const res = await api.post(
+  "/register",
+  {
+    username,
+    email,
+    password
+  }
+);
 
-      alert("Registration successful");
+localStorage.setItem(
+  "token",
+  res.data.token
+);
 
-      navigate("/login");
+navigate("/dashboard");
 
     } catch (err) {
 

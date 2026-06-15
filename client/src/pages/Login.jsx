@@ -21,17 +21,20 @@ function Login() {
         try {
 
             const res =
-            await api.post(
-                "/login",
-                {
-                    email,
-                    password
-                }
-            );
+await api.post(
+    "/login",
+    {
+        email,
+        password
+    }
+);
 
-            console.log(res.data);
+localStorage.setItem(
+    "token",
+    res.data.token
+);
 
-            navigate("/dashboard");
+navigate("/dashboard");
 
         } catch(err) {
 
