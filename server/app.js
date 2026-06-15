@@ -51,7 +51,9 @@ app.use("/api", authRoutes);
 app.use("/api", itemRoutes);
 
 app.get("/", (req, res) => {
-  res.send("HELLO FROM PRAJIKTA DEPLOY TEST");
+  res.json({
+    message: "Lost & Found API Running"
+  });
 });
 
 const PORT =
