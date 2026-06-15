@@ -43,8 +43,10 @@ router.post("/register", async (req, res) => {
         );
 
         res.cookie("token", token, {
-            httpOnly: true
-        });
+    httpOnly: true,
+    secure: true,
+    sameSite: "none"
+});
 
         res.status(201).json({
             message: "Registration successful",
@@ -100,9 +102,10 @@ router.post("/login", async (req, res) => {
         );
 
         res.cookie("token", token, {
-            httpOnly: true
-        });
-
+    httpOnly: true,
+    secure: true,
+    sameSite: "none"
+});
         res.status(200).json({
             message: "Login successful",
             user: {
@@ -121,11 +124,15 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none"
+    });
 
-    res.status(200).send(
-        "Logged out successfully"
-    );
+    res.status(200).json({
+        message: "Logged out successfully"
+    });
 });
 
 router.get("/", (req,res)=>{
